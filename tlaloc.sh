@@ -30,6 +30,7 @@ base_directory=${DEFAULT_BASE_DIRECTORY}
 package_directory=${DEFAULT_PACKAGE_DIRECTORY}
 binary_directory=${DEFAULT_BINARY_DIRECTORY}
 image_directory=${DEFAULT_IMAGE_DIRECTORY}
+resflash_directory=${DEFAULT_RESFLASH_DIRECTORY}
 
 package_list=${DEFAULT_PACKAGE_LIST}
 binary_list=${DEFAULT_BINARY_LIST}
@@ -38,21 +39,6 @@ com0_speed=${DEFAULT_COM0_SPEED}
 image_size=${DEFAULT_IMAGE_SIZE}
 resflash_commit=${DEFAULT_RESFLASH_COMMIT}
 resflash_source_url=${DEFAULT_RESFLASH_SOURCE_URL}
-
-# Check if the script is executes as root user
-if [ $(id -u) -ne 0 ]; then
-  echo 'Please run the script as root user.'
-  exit 1
-fi
-
-# Check if git is installed
-type git &> /dev/null
-if [ ${?} -ne 0 ]; then
-  echo "Git is not installed on the system but it is required to get resflash."
-  echo "Please install it using the following command:"
-  echo "pkg_add git"
-  exit 1
-fi
 
 # Parse options first
 while :; do
@@ -88,8 +74,32 @@ while :; do
 done
 
 # Show the configuration and exit
+debug "DEBUG" "Checking if the user wants only to show the current configuration."
 if [ "${show_config}" == "YES" ]; then
   print_config
+fi
+
+# Check if the script is executed as root user
+debug "DEBUG" "Checking if the user executing the script is root."
+if [ $(id -u) -ne 0 ]; then
+  debug "DEBUG" "The script is not run as root user."
+  echo 'Please run the script as root user.'
+  exit 1
+else
+  debug "DEBUG" "The script is run as root user."
+fi
+
+# Check if git is installed
+debug "DEBUG" "Checking if git is installed on the system."
+type git &> /dev/null
+if [ ${?} -ne 0 ]; then
+  debug "DEBUG" "Git is not installed on the system."
+  echo "Git is not installed on the system but it is required to get resflash."
+  echo "Please install it using the following command:"
+  echo "pkg_add git"
+  exit 1
+else
+  debug "DEBUG" "Git is installed on the system."
 fi
 
 # TODO: get the resflash sources

@@ -17,6 +17,7 @@ print_usage() {
   echo "                 [--binary-directory <binary_directory>]"
   echo "                 [--base-directory <base_directory>]"
   echo "                 [--image-directory <image_directory>]"
+  echo "                 [--resflash-directory <resflash_directory>]"
 
   echo "                 [--package-list <package_list>]"
   echo "                 [--binary-list <binary_list>]"
@@ -58,6 +59,9 @@ print_usage() {
   echo "         directory that contains the final resflash"
   echo "         image and filesystem files"
   echo "           default is \"${DEFAULT_IMAGE_DIRECTORY}\""
+  echo "       --resflash-directory:"
+  echo "         directory that contains the resflash git repository"
+  echo "           default is \"${DEFAULT_RESFLASH_DIRECTORY}\""
 
   echo "       --package-list:"
   echo "         blank seperated list of packages to be installed in the image"
@@ -105,6 +109,7 @@ print_config() {
   echo "--binary-directory     binary_directory       ${binary_directory}"
   echo "--base-directory       binary_directory       ${base_directory}"
   echo "--image-directory      image_directory        ${image_directory}"
+  echo "--resflash-directory   resflash_directory     ${resflash_directory}"
 
   echo "--package-list         package_list           ${package_list}"
   echo "--binary-list          binary_list            ${binary_list}"
@@ -127,4 +132,15 @@ change_openbsd_arch() {
   openbsd_arch=${1}
   openbsd_package_url=${openbsd_url}/${openbsd_version}/packages/${openbsd_arch}
   openbsd_binary_url=${openbsd_url}/${openbsd_version}/${openbsd_arch}
+}
+
+debug() {
+  if [ "${enable_debug}" == "YES" ]; then
+    debug_date_time=`date "+%Y-%m-%d %H:%M:%S"`
+    debug_level=${1}
+    debug_message=${2}
+    echo "${debug_date_time} ${debug_level}: ${debug_message}"
+  else
+    echo "enable_debug=${enable_debug}"
+  fi
 }
