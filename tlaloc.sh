@@ -69,14 +69,14 @@ while :; do
     --image-size)           image_size=${2};              shift 2;;
     --resflash-commit)      resflash_commit=${2};         shift 2;;
     --resflash-source-url)  resflash_source_url=${2};     shift 2;;
-    -*|--*|)                print_usage;;
+    -*|--*)                print_usage;;
     *)                      break;;
   esac
 done
 
 # Show the configuration and exit
-if [ "$[show_config]" == "YES" ]; then
-  show_current_config
+if [ "${show_config}" == "YES" ]; then
+  print_config
 fi
 
 # TODO: get the resflash sources
