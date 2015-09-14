@@ -111,3 +111,16 @@ print_config() {
   echo "--resflash-source-url  resflash_source_url    ${resflash_source_url}"
   exit 1
 }
+
+change_openbsd_version() {
+  openbsd_version=${1}
+  openbsd_version_short=`echo ${openbsd_version} | sed 's/\.//g'`
+  openbsd_package_url=${openbsd_url}/${openbsd_version}/packages/${openbsd_arch}
+  openbsd_binary_url=${openbsd_url}/${openbsd_version}/${openbsd_arch}
+}
+
+change_openbsd_architecture() {
+  openbsd_arch=${1}
+  openbsd_package_url=${openbsd_url}/${openbsd_version}/packages/${openbsd_arch}
+  openbsd_binary_url=${openbsd_url}/${openbsd_version}/${openbsd_arch}
+}
