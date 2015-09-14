@@ -17,6 +17,7 @@ TLALOC_VERSION=0.0.1
 
 # Set the variables to default
 show_config=${DEFAULT_SHOW_CONFIG}
+enable_debug=${DEFAULT_ENABLE_DEBUG}
 
 openbsd_version=${DEFAULT_OPENBSD_VERSION}
 openbsd_version_short=${DEFAULT_OPENBSD_VERSION_SHORT}
@@ -37,8 +38,6 @@ com0_speed=${DEFAULT_COM0_SPEED}
 image_size=${DEFAULT_IMAGE_SIZE}
 resflash_commit=${DEFAULT_RESFLASH_COMMIT}
 resflash_source_url=${DEFAULT_RESFLASH_SOURCE_URL}
-
-enable_debug=${DEFAULT_ENABLE_DEBUG}
 
 # Check if the script is executes as root user
 if [ $(id -u) -ne 0 ]; then
