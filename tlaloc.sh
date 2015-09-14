@@ -3,11 +3,11 @@
 # tlaloc script
 # Copyright Timo Pallach <timo@pallach.de>, see LICENSE for details
 
-#set -o errexit
-#set -o nounset
-#if [ "$(set -o|grep pipefail)" ]; then
-#  set -o pipefail
-#fi
+set -o errexit
+set -o nounset
+if [ "$(set -o|grep pipefail)" ]; then
+  set -o pipefail
+fi
 
 # Set some tlaloc global variables
 TLALOC_VERSION=0.0.1
@@ -28,7 +28,7 @@ openbsd_binary_url=${DEFAULT_OPENBSD_BINARY_URL}
 base_directory=${DEFAULT_BASE_DIRECTORY}
 package_directory=${DEFAULT_PACKAGE_DIRECTORY}
 binary_directory=${DEFAULT_BINARY_DIRECTORY}
-image_directory=${DEFAULT_IMAGE_DIRECOTRY}
+image_directory=${DEFAULT_IMAGE_DIRECTORY}
 
 package_list=${DEFAULT_PACKAGE_LIST}
 binary_list=${DEFAULT_BINARY_LIST}
@@ -48,6 +48,10 @@ fi
 
 # Parse options first
 while :; do
+  # Exit the while loop if we have no options passed.
+  if [ ${#} -eq 0 ]; then
+    break;
+  fi
   case ${1} in
     --help)                 print_usage;                  shift;;
     --version)              print_version && exit 1;      shift;;
@@ -69,7 +73,7 @@ while :; do
     --image-size)           image_size=${2};              shift 2;;
     --resflash-commit)      resflash_commit=${2};         shift 2;;
     --resflash-source-url)  resflash_source_url=${2};     shift 2;;
-    -*|--*)                print_usage;;
+    -*|--*)                 print_usage;;
     *)                      break;;
   esac
 done

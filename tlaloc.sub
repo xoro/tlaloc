@@ -99,7 +99,7 @@ print_config() {
 
   echo "--package-directory    package_directory      ${package_directory}"
   echo "--binary-directory     binary_directory       ${binary_directory}"
-  echo "--base-directory       binary_directory       ${binary_directory}"
+  echo "--base-directory       binary_directory       ${base_directory}"
   echo "--image-directory      image_directory        ${image_directory}"
 
   echo "--package-list         package_list           ${package_list}"
@@ -119,7 +119,7 @@ change_openbsd_version() {
   openbsd_binary_url=${openbsd_url}/${openbsd_version}/${openbsd_arch}
 }
 
-change_openbsd_architecture() {
+change_openbsd_arch() {
   openbsd_arch=${1}
   openbsd_package_url=${openbsd_url}/${openbsd_version}/packages/${openbsd_arch}
   openbsd_binary_url=${openbsd_url}/${openbsd_version}/${openbsd_arch}
