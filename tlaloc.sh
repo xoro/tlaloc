@@ -16,20 +16,25 @@ TLALOC_VERSION=0.0.1
 . ./tlaloc.sub
 
 # Set the variables to default
-show_config=NO
+show_config=${DEFAULT_SHOW_CONFIG}
+
 openbsd_version=${DEFAULT_OPENBSD_VERSION}
 openbsd_version_short=${DEFAULT_OPENBSD_VERSION_SHORT}
-openbsd_architecture=${DEFAULT_OPENBSD_ARCHITECTURE}
+openbsd_arch=${DEFAULT_OPENBSD_ARCH}
 openbsd_url=${DEFAULT_OPENBSD_URL}
-package_path_url=${DEFAULT_PACKAGE_PATH_URL}
-binary_path_url=${DEFAULT_BINARY_PATH_URL}
+openbsd_package_url=${DEFAULT_OPENBSD_PACKAGE_URL}
+openbsd_binary_url=${DEFAULT_OPENBSD_BINARY_URL}
+
+base_directory=${DEFAULT_BASE_DIRECTORY}
 package_directory=${DEFAULT_PACKAGE_DIRECTORY}
+binary_directory=${DEFAULT_BINARY_DIRECTORY}
+image_directory=${DEFAULT_IMAGE_DIRECOTRY}
+
 package_list=${DEFAULT_PACKAGE_LIST}
 binary_list=${DEFAULT_BINARY_LIST}
+
 com0_speed=${DEFAULT_COM0_SPEED}
 image_size=${DEFAULT_IMAGE_SIZE}
-base_directory=${DEFAULT_BASE_DIRECTORY}
-binary_directory=${DEFAULT_BINARY_DIRECTORY}
 resflash_commit=${DEFAULT_RESFLASH_COMMIT}
 resflash_source_url=${DEFAULT_RESFLASH_SOURCE_URL}
 
@@ -43,33 +48,35 @@ fi
 
 # Parse options first
 while :; do
-  # The user did not pass any option so we can simply exit the while loop.
-  if [ ${#} -eq 0 ]; then
-    break;
-  fi
   case ${1} in
-    -h|--help)                        print_usage;                      shift;;
-    -v|--version)                     print_version && exit 1;          shift;;
-    -c|--show-config)                 show_config=YES;                  shift;;
-    -d|--change-openbsd-version)      change_openbsd_version ${2};      shift 2;;
-    -a|--change-openbsd-architecture) change_openbsd_architecture ${2}; shift 2;;
-    -p|--package-directory)           package_directory=${2};           shift 2;;
-    -b|--base-directory)              base_directory=${2};              shift 2;;
-    -l|--package-list)                package_list=${2};                shift 2;;
-    -x|--binary-list)                 binary_list=${2};                 shift 2;;
-    -m|--image-directory)             image_directory=${2};             shift 2;;
-    -s|--com0-speed)                  com0_speed=${2};                  shift 2;;
-    -i|--image-size)                  image_size=${2};                  shift 2;;
-    -r|--resflash-commit)             resflash_commit=${2};             shift 2;;
-    -u|--resflash-source-url)         resflash_source_url=${2};         shift 2;;
-    -*|--*)                           print_usage;;
-    *)                                break;;
+    --help)                 print_usage;                  shift;;
+    --version)              print_version && exit 1;      shift;;
+    --show-config)          show_config=YES;              shift;;
+
+    --openbsd-version)      change_openbsd_version ${2};  shift 2;;
+    --openbsd-arch)         change_openbsd_arch ${2};     shift 2;;
+    --openbsd-url)          openbsd_url=${2}              shift 2;;
+
+    --package-directory)    package_directory=${2};       shift 2;;
+    --binary-directory)     binary_directory=${2};        shift 2;;
+    --base-directory)       base_directory=${2};          shift 2;;
+    --image-directory)      image_directory=${2};         shift 2;;
+
+    --package-list)         package_list=${2};            shift 2;;
+    --binary-list)          binary_list=${2};             shift 2;;
+
+    --com0-speed)           com0_speed=${2};              shift 2;;
+    --image-size)           image_size=${2};              shift 2;;
+    --resflash-commit)      resflash_commit=${2};         shift 2;;
+    --resflash-source-url)  resflash_source_url=${2};     shift 2;;
+    -*|--*|)                print_usage;;
+    *)                      break;;
   esac
 done
 
 # Show the configuration and exit
-if [ "${show_config}" == "YES" ]; then
-  print_config
+if [ "$[show_config]" == "YES" ]; then
+  show_current_config
 fi
 
 # TODO: get the resflash sources
