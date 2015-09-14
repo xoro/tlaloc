@@ -6,6 +6,7 @@
 print_usage() {
   echo "Usage: tlaloc.sh [-h | --help]"
   echo "                 [-v | --version]"
+  echo "                 [-c | --show-config]"
   echo "                 [-d | --change-openbsd-version <openbsd_version>]"
   echo "                 [-a | --change-openbsd-architecture <processor_architecture>]"
   echo "                 [-p | --package-directory <package_directory>]"
@@ -22,6 +23,8 @@ print_usage() {
   echo "         display this help message"
   echo "       -v | --version:"
   echo "         display this tools current version"
+  echo "       -c | --show-config:"
+  echo "         display the configuration the image will be build with"
   echo "       -d | --change-openbsd-version:"
   echo "         OpenBSD version to be used to build the image"
   echo "           default is \"${DEFAULT_OPENBSD_VERSION}\""
