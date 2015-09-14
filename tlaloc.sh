@@ -16,6 +16,7 @@ TLALOC_VERSION=0.0.1
 . ./tlaloc.sub
 
 # Set the variables to default
+show_config=NO
 openbsd_version=${DEFAULT_OPENBSD_VERSION}
 openbsd_version_short=${DEFAULT_OPENBSD_VERSION_SHORT}
 openbsd_architecture=${DEFAULT_OPENBSD_ARCHITECTURE}
@@ -44,7 +45,8 @@ fi
 while :; do
   case ${1} in
     -h|--help)                        print_usage;                      shift;;
-    -v|--version)                     print_version  && exit 1;         shift;;
+    -v|--version)                     print_version && exit 1;          shift;;
+    -c|--show-config)                 show_config=YES;                  shift;;
     -d|--change-openbsd-version)      change_openbsd_version ${2};      shift 2;;
     -a|--change-openbsd-architecture) change_openbsd_architecture ${2}; shift 2;;
     -p|--package-directory)           package_directory=${2};           shift 2;;
@@ -60,6 +62,11 @@ while :; do
     *)                                print_usage;;
   esac
 done
+
+# Show the configuration and exit
+if [ "$[show_config]" == "YES" ]; then
+  show_current_config
+fi
 
 # TODO: get the resflash sources
 

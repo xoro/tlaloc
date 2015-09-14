@@ -67,3 +67,22 @@ print_version() {
   echo "VERSION: ${TLALOC_VERSION}"
   exit 1
 }
+
+print_config() {
+  echo "openbsd_version=${openbsd_version}"
+  echo "openbsd_version_short=${openbsd_version_short}"
+  echo "openbsd_architecture=${openbsd_architecture}"
+  echo "openbsd_url=${openbsd_url}"
+  echo "package_path_url=${package_path_url}"
+  echo "binary_path_url=${binary_path_url}"
+  echo "package_directory=${package_directory}"
+  echo "package_list=${package_list}"
+  echo "binary_list=${binary_list}"
+  echo "com0_speed=${com0_speed}"
+  echo "image_size=${image_size}"
+  echo "base_directory=${base_directory}"
+  echo "binary_directory=${binary_directory}"
+  echo "resflash_commit=${resflash_commit}"
+  echo "resflash_source_url=${resflash_source_url}"
+  exit 1
+}
