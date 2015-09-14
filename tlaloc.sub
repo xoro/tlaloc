@@ -7,6 +7,7 @@ print_usage() {
   echo "Usage: tlaloc.sh [--help]"
   echo "                 [--version]"
   echo "                 [--show-config]"
+  echo "                 [--enable-debug]"
 
   echo "                 [--openbsd-version <openbsd_version>]"
   echo "                 [--openbsd-arch <processor_architecture>]"
@@ -31,6 +32,8 @@ print_usage() {
   echo "         display this tools current version"
   echo "       --show-config:"
   echo "         display the configuration the image will be build with"
+  echo "       --enable-debug:"
+  echo "         displays more information during the execution of the script"
 
   echo "       --openbsd-version:"
   echo "         OpenBSD version to be used to build the image"
@@ -90,6 +93,7 @@ print_version() {
 print_config() {
   echo "Command line switch    Variable name          Variable value"
   echo "===================    =====================  ====================="
+  echo "--enable-debug         enable_debug           ${enable_debug}"
   echo "--openbsd-version      openbsd_version        ${openbsd_version}"
   echo "                       openbsd_version_short  ${openbsd_version_short}"
   echo "--openbsd-arch         openbsd_arch           ${openbsd_arch}"

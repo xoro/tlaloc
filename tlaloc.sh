@@ -38,6 +38,8 @@ image_size=${DEFAULT_IMAGE_SIZE}
 resflash_commit=${DEFAULT_RESFLASH_COMMIT}
 resflash_source_url=${DEFAULT_RESFLASH_SOURCE_URL}
 
+enable_debug=${DEFAULT_ENABLE_DEBUG}
+
 # Check if the script is executes as root user
 if [ $(id -u) -ne 0 ]; then
   echo 'Please run the script as root user.'
@@ -45,12 +47,11 @@ if [ $(id -u) -ne 0 ]; then
 fi
 
 # Check if git is installed
-type git > /dev/null
+type git &> /dev/null
 if [ ${?} -ne 0 ]; then
   echo "Git is not installed on the system but it is required to get resflash."
   echo "Please install it using the following command:"
   echo "pkg_add git"
-  echo ""
   exit 1
 fi
 
@@ -64,6 +65,7 @@ while :; do
     --help)                 print_usage;                  shift;;
     --version)              print_version && exit 1;      shift;;
     --show-config)          show_config=YES;              shift;;
+    --enable-debug)         enable_debug=YES;             shift;;
 
     --openbsd-version)      change_openbsd_version ${2};  shift 2;;
     --openbsd-arch)         change_openbsd_arch ${2};     shift 2;;
