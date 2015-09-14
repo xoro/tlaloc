@@ -43,6 +43,10 @@ fi
 
 # Parse options first
 while :; do
+  # The user did not pass any option so we can simply exit the while loop.
+  if [ ${#} -eq 0 ]; then
+    break;
+  fi
   case ${1} in
     -h|--help)                        print_usage;                      shift;;
     -v|--version)                     print_version && exit 1;          shift;;
@@ -59,13 +63,13 @@ while :; do
     -r|--resflash-commit)             resflash_commit=${2};             shift 2;;
     -u|--resflash-source-url)         resflash_source_url=${2};         shift 2;;
     -*|--*)                           print_usage;;
-    *)                                print_usage;;
+    *)                                break;;
   esac
 done
 
 # Show the configuration and exit
-if [ "$[show_config]" == "YES" ]; then
-  show_current_config
+if [ "${show_config}" == "YES" ]; then
+  print_config
 fi
 
 # TODO: get the resflash sources
