@@ -3,12 +3,6 @@
 # tlaloc script
 # Copyright Timo Pallach <timo@pallach.de>, see LICENSE for details
 
-#set -o errexit
-#set -o nounset
-#if [ "$(set -o|grep pipefail)" ]; then
-#  set -o pipefail
-#fi
-
 # Set some tlaloc global variables
 TLALOC_VERSION=0.0.1
 
@@ -73,6 +67,17 @@ while :; do
   esac
 done
 
+# Enable some additional options if the enable-debug configuration parameter is Set
+debug "DEBUG" "Checking if the enable debug was set to activate some more options."
+if [ "${enable_debug}" == "YES" ]; then
+  debug "DEBUG" "Execute \"set -o errexit\" and other options."
+  set -o errexit
+  set -o nounset
+  if [ "$(set -o|grep pipefail)" ]; then
+    set -o pipefail
+  fi
+fi
+
 # Show the configuration and exit
 debug "DEBUG" "Checking if the user wants only to show the current configuration."
 if [ "${show_config}" == "YES" ]; then
@@ -103,6 +108,8 @@ else
 fi
 
 # TODO: get the resflash sources
+debug "DEBUG" "Getting the resflash sources."
+git clone ${resflash_source_url} ${resflash_directory}
 
 # TODO: get the packages to be installed on the resflash image
 
