@@ -3,11 +3,11 @@
 # tlaloc script
 # Copyright Timo Pallach <timo@pallach.de>, see LICENSE for details
 
-set -o errexit
-set -o nounset
-if [ "$(set -o|grep pipefail)" ]; then
-  set -o pipefail
-fi
+#set -o errexit
+#set -o nounset
+#if [ "$(set -o|grep pipefail)" ]; then
+#  set -o pipefail
+#fi
 
 # Set some tlaloc global variables
 TLALOC_VERSION=0.0.1
@@ -45,13 +45,12 @@ if [ $(id -u) -ne 0 ]; then
 fi
 
 # Check if git is installed
-which git
-if [ ${?} -eq 0 ]; then
-  echo "Git is installed on the system."
-else
-  echo "Git is not installed on the system."
+type git > /dev/null
+if [ ${?} -ne 0 ]; then
+  echo "Git is not installed on the system but it is required to get resflash."
   echo "Please install it using the following command:"
-  echo "# pkg_add git"
+  echo "pkg_add git"
+  echo ""
   exit 1
 fi
 
