@@ -44,7 +44,16 @@ if [ $(id -u) -ne 0 ]; then
   exit 1
 fi
 
-# TODO: check if git is installed
+# Check if git is installed
+which git
+if [ ${?} -eq 0 ]; then
+  echo "Git is installed on the system."
+else
+  echo "Git is not installed on the system."
+  echo "Please install it using the following command:"
+  echo "# pkg_add git"
+  exit 1
+fi
 
 # Parse options first
 while :; do
