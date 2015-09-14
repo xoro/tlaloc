@@ -24,7 +24,7 @@ print_usage() {
 
   echo "                 [--com0-speed <com0_speed>]"
   echo "                 [--image-size <image_size>]"
-  echo "                 [--resflash-commit <resflash_commit>]"
+  echo "                 [--resflash-treeish <resflash_treeish>]"
   echo "                 [--resflash-source-url <resflash_source_url>]"
   echo ""
   echo "       --help:"
@@ -77,10 +77,10 @@ print_usage() {
   echo "       --image-size:"
   echo "         size of the image to be created in MB"
   echo "           default is \"${DEFAULT_IMAGE_SIZE}\""
-  echo "       --resflash-commit:"
-  echo "         resflash commit to be checked out to create"
+  echo "       --resflash-treeish:"
+  echo "         resflash commit, tag or ref to be checked out to create"
   echo "         the image and the filesystem files"
-  echo "           default is \"${DEFAULT_RESFLASH_COMMIT}\""
+  echo "           default is \"${DEFAULT_RESFLASH_TREEISH}\""
   echo "       --resflash-source-url:"
   echo "         resflash git repository source url to be checked out to create"
   echo "         the image and the filesystem files"
@@ -116,7 +116,7 @@ print_config() {
 
   echo "--com0-speed           com0_speed             ${com0_speed}"
   echo "--image-size           image_size             ${image_size}"
-  echo "--resflash-commit      resflash_commit        ${resflash_commit}"
+  echo "--resflash-treeish     resflash_treeish       ${resflash_treeish}"
   echo "--resflash-source-url  resflash_source_url    ${resflash_source_url}"
   exit 1
 }
@@ -142,5 +142,27 @@ debug() {
     echo "${debug_date_time} ${debug_level}: ${debug_message}"
   else
     echo "enable_debug=${enable_debug}"
+  fi
+}
+
+get_resflash() {
+  # Clone the resflash repository
+  git clone ${resflash_source_url} ${resflash_directory}
+  if [ ${?} -ne 0 ]; then
+    echo "Getting resflash from \"${resflash_source_url}\" did not succeed!"
+    echo "git clone returned \"${?}\"."
+    echo "Exiting the script."
+    exit 1
+  else
+    debug "DEBUG" "resflash was successfully cloned into ${resflash_directory}."
+  fi
+  # Check if the user wants to checkout a specific resflash commit, tag or ref.
+  if [ "${resflash_treeish}" == "" ]; then
+    debug "DEBUG" "Not checking out any specific commit so keep on using the master branch."
+  else
+    debug "DEBUG" "Checking out treeish with id \"${resflash_treeish}\"."
+    cd ${resflash_directory}
+    git checkout ${resflash_treeish}
+    cd ${TLALOC_DIRECTORY}
   fi
 }

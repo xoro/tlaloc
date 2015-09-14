@@ -5,6 +5,7 @@
 
 # Set some tlaloc global variables
 TLALOC_VERSION=0.0.1
+TLALOC_DIRECTORY=`pwd`
 
 . ./tlaloc.conf
 . ./tlaloc.sub
@@ -31,7 +32,7 @@ binary_list=${DEFAULT_BINARY_LIST}
 
 com0_speed=${DEFAULT_COM0_SPEED}
 image_size=${DEFAULT_IMAGE_SIZE}
-resflash_commit=${DEFAULT_RESFLASH_COMMIT}
+resflash_treeish=${DEFAULT_RESFLASH_TREEISH}
 resflash_source_url=${DEFAULT_RESFLASH_SOURCE_URL}
 
 # Parse options first
@@ -60,7 +61,7 @@ while :; do
 
     --com0-speed)           com0_speed=${2};              shift 2;;
     --image-size)           image_size=${2};              shift 2;;
-    --resflash-commit)      resflash_commit=${2};         shift 2;;
+    --resflash-treeish)     resflash_treeish=${2};         shift 2;;
     --resflash-source-url)  resflash_source_url=${2};     shift 2;;
     -*|--*)                 print_usage;;
     *)                      break;;
@@ -107,9 +108,9 @@ else
   debug "DEBUG" "Git is installed on the system."
 fi
 
-# TODO: get the resflash sources
+# Get the resflash sources and checout the specific treeish
 debug "DEBUG" "Getting the resflash sources."
-git clone ${resflash_source_url} ${resflash_directory}
+get_resflash
 
 # TODO: get the packages to be installed on the resflash image
 
