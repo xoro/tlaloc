@@ -108,7 +108,7 @@ else
   debug "DEBUG" "Git is installed on the system."
 fi
 
-# Get the resflash sources and checout the specific treeish
+# Get the resflash sources and checkout the specific treeish
 debug "DEBUG" "Getting the resflash sources."
 get_resflash
 
