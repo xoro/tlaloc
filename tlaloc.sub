@@ -294,7 +294,7 @@ get_packages() {
   fi
 
   # Loop through the list of packages to be downloaded and get them.
-  for package in ${${package_list} ; do
+  for package in ${package_list} ; do
     package_filename=`PKG_PATH=${openbsd_package_url} pkg_info -f ${package} | grep tgz | rev | cut -d "/" -f 1 | rev`
     get_dependencies ${package_directory} ${package_filename}
   done
