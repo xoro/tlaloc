@@ -104,20 +104,23 @@ print_config() {
   echo "--openbsd-url          openbsd_url            ${openbsd_url}"
   echo "                       openbsd_package_url    ${openbsd_package_url}"
   echo "                       openbsd_binary_url     ${openbsd_binary_url}"
-
+  echo ""
   echo "--package-directory    package_directory      ${package_directory}"
   echo "--binary-directory     binary_directory       ${binary_directory}"
   echo "--base-directory       binary_directory       ${base_directory}"
   echo "--image-directory      image_directory        ${image_directory}"
   echo "--resflash-directory   resflash_directory     ${resflash_directory}"
-
+  echo ""
   echo "--package-list         package_list           ${package_list}"
   echo "--binary-list          binary_list            ${binary_list}"
-
+  echo ""
   echo "--com0-speed           com0_speed             ${com0_speed}"
   echo "--image-size           image_size             ${image_size}"
   echo "--resflash-treeish     resflash_treeish       ${resflash_treeish}"
   echo "--resflash-source-url  resflash_source_url    ${resflash_source_url}"
+  echo ""
+  echo "                       TLALOC_VERSION         ${TLALOC_VERSION}"
+  echo "                       TLALOC_DIRECTORY       ${TLALOC_DIRECTORY}"
   exit 1
 }
 
