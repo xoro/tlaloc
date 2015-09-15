@@ -9,6 +9,13 @@ print_usage() {
   echo "                 [--show-config]"
   echo "                 [--enable-debug]"
 
+  echo "                 [--cleanup-directories]"
+  echo "                 [--cleanup-base-directory]"
+  echo "                 [--cleanup-package-directory]"
+  echo "                 [--cleanup-binary-directory]"
+  echo "                 [--cleanup-image-directory]"
+  echo "                 [--cleanup-resflash-directory]"
+
   echo "                 [--openbsd-version <openbsd_version>]"
   echo "                 [--openbsd-arch <processor_architecture>]"
   echo "                 [--openbsd-url <openbsd_url>]"
@@ -35,6 +42,26 @@ print_usage() {
   echo "         display the configuration the image will be build with"
   echo "       --enable-debug:"
   echo "         displays more information during the execution of the script"
+
+  echo "       --cleanup-directories:"
+  echo "         the base, package, binary, image and resflash directories"
+  echo "         will be cleaned up (deleted) before creating the"
+  echo "         new resfalsh image and filesystem"
+  echo "       --cleanup-base-directory:"
+  echo "         the base directory will be cleaned up (deleted) before"
+  echo "         creating the new resfalsh image and filesystem"
+  echo "       --cleanup-package-directory:"
+  echo "         the package directory will be cleaned up (deleted) before"
+  echo "         creating the new resfalsh image and filesystem"
+  echo "       --cleanup-binary-directory:"
+  echo "         the binary directory will be cleaned up (deleted) before"
+  echo "         creating the new resfalsh image and filesystem"
+  echo "       --cleanup-image-directory:"
+  echo "         the image directory will be cleaned up (deleted) before"
+  echo "         creating the new resfalsh image and filesystem"
+  echo "       --cleanup-resflash-directory:"
+  echo "         the resflash directory will be cleaned up (deleted) before"
+  echo "         creating the new resfalsh image and filesystem"
 
   echo "       --openbsd-version:"
   echo "         OpenBSD version to be used to build the image"
@@ -95,32 +122,40 @@ print_version() {
 }
 
 print_config() {
-  echo "Command line switch    Variable name          Variable value"
-  echo "===================    =====================  ====================="
-  echo "--enable-debug         enable_debug           ${enable_debug}"
-  echo "--openbsd-version      openbsd_version        ${openbsd_version}"
-  echo "                       openbsd_version_short  ${openbsd_version_short}"
-  echo "--openbsd-arch         openbsd_arch           ${openbsd_arch}"
-  echo "--openbsd-url          openbsd_url            ${openbsd_url}"
-  echo "                       openbsd_package_url    ${openbsd_package_url}"
-  echo "                       openbsd_binary_url     ${openbsd_binary_url}"
+  echo "Command line switch          Variable name              Variable value"
+  echo "============================ ========================== ====================="
+  echo "--enable-debug               enable_debug               ${enable_debug}"
   echo ""
-  echo "--package-directory    package_directory      ${package_directory}"
-  echo "--binary-directory     binary_directory       ${binary_directory}"
-  echo "--base-directory       binary_directory       ${base_directory}"
-  echo "--image-directory      image_directory        ${image_directory}"
-  echo "--resflash-directory   resflash_directory     ${resflash_directory}"
+  echo "--cleanup-directories        cleanup_directories        ${cleanup_directories}"
+  echo "--cleanup-base-directory     cleanup_base_directory     ${cleanup_base_directory}"
+  echo "--cleanup-package-directory  cleanup_package_directory  ${cleanup_package_directory}"
+  echo "--cleanup-binary-directory   cleanup_binary_directory   ${cleanup_binary_directory}"
+  echo "--cleanup-image-directory    cleanup_image_directory    ${cleanup_image_directory}"
+  echo "--cleanup-resflash-directory cleanup_resflash_directory ${cleanup_resflash_directory}"
   echo ""
-  echo "--package-list         package_list           ${package_list}"
-  echo "--binary-list          binary_list            ${binary_list}"
+  echo "--openbsd-version            openbsd_version            ${openbsd_version}"
+  echo "                             openbsd_version_short      ${openbsd_version_short}"
+  echo "--openbsd-arch               openbsd_arch               ${openbsd_arch}"
+  echo "--openbsd-url                openbsd_url                ${openbsd_url}"
+  echo "                             openbsd_package_url        ${openbsd_package_url}"
+  echo "                             openbsd_binary_url         ${openbsd_binary_url}"
   echo ""
-  echo "--com0-speed           com0_speed             ${com0_speed}"
-  echo "--image-size           image_size             ${image_size}"
-  echo "--resflash-treeish     resflash_treeish       ${resflash_treeish}"
-  echo "--resflash-source-url  resflash_source_url    ${resflash_source_url}"
+  echo "--package-directory          package_directory          ${package_directory}"
+  echo "--binary-directory           binary_directory           ${binary_directory}"
+  echo "--base-directory             binary_directory           ${base_directory}"
+  echo "--image-directory            image_directory            ${image_directory}"
+  echo "--resflash-directory         resflash_directory         ${resflash_directory}"
   echo ""
-  echo "                       TLALOC_VERSION         ${TLALOC_VERSION}"
-  echo "                       TLALOC_DIRECTORY       ${TLALOC_DIRECTORY}"
+  echo "--package-list               package_list               ${package_list}"
+  echo "--binary-list                binary_list                ${binary_list}"
+  echo ""
+  echo "--com0-speed                 com0_speed                 ${com0_speed}"
+  echo "--image-size                 image_size                 ${image_size}"
+  echo "--resflash-treeish           resflash_treeish           ${resflash_treeish}"
+  echo "--resflash-source-url        resflash_source_url        ${resflash_source_url}"
+  echo ""
+  echo "                             TLALOC_VERSION             ${TLALOC_VERSION}"
+  echo "                             TLALOC_DIRECTORY           ${TLALOC_DIRECTORY}"
   exit 1
 }
 
@@ -146,8 +181,86 @@ debug() {
   fi
 }
 
+is_user_root() {
+  debug "DEBUG" "Checking if the user executing the script is root."
+  if [ $(id -u) -ne 0 ]; then
+    debug "DEBUG" "The script is not run as root user."
+    echo 'Please run the script as root user.'
+    exit 1
+  else
+    debug "DEBUG" "The script is run as root user."
+  fi
+}
+
+cleanup_working_directories() {
+  debug "DEBUG" "Cleaning up working directories."
+  if [ "${cleanup_directories}" == "YES" ]; then
+    debug "DEBUG" "Deleting the following directories:"
+    debug "DEBUG" "${base_directory} ${package_directory} ${binary_directory} \
+                   ${image_directory} ${resflash_directory}"
+    rm -rf ${base_directory} ${package_directory} ${binary_directory} \
+           ${image_directory} ${resflash_directory}
+  else
+    debug "DEBUG" "The working directories are not cleaned up (deleted)."
+  fi
+
+  debug "DEBUG" "Cleaning up base directory."
+  if [ "${cleanup_base_directory}" == "YES" ]; then
+    debug "DEBUG" "Deleting the base directory"
+    rm -rf ${base_directory}
+  else
+    debug "DEBUG" "The base directory is not cleaned up (deleted)."
+  fi
+
+  debug "DEBUG" "Cleaning up package directory."
+  if [ "${cleanup_package_directory}" == "YES" ]; then
+    debug "DEBUG" "Deleting the package directory"
+    rm -rf ${package_directory}
+  else
+    debug "DEBUG" "The package directory is not cleaned up (deleted)."
+  fi
+
+  debug "DEBUG" "Cleaning up binary directory."
+  if [ "${cleanup_binary_directory}" == "YES" ]; then
+    debug "DEBUG" "Deleting the binary directory"
+    rm -rf ${binary_directory}
+  else
+    debug "DEBUG" "The binary directory is not cleaned up (deleted)."
+  fi
+
+  debug "DEBUG" "Cleaning up image directory."
+  if [ "${cleanup_image_directory}" == "YES" ]; then
+    debug "DEBUG" "Deleting the image directory"
+    rm -rf ${image_directory}
+  else
+    debug "DEBUG" "The image directory is not cleaned up (deleted)."
+  fi
+
+  debug "DEBUG" "Cleaning up resflash directory."
+  if [ "${cleanup_resflash_directory}" == "YES" ]; then
+    debug "DEBUG" "Deleting the resflash directory"
+    rm -rf ${resflash_directory}
+  else
+    debug "DEBUG" "The resflash directory is not cleaned up (deleted)."
+  fi
+}
+
+is_git_installed() {
+  debug "DEBUG" "Checking if git is installed on the system."
+  type git &> /dev/null
+  if [ ${?} -ne 0 ]; then
+    debug "DEBUG" "Git is not installed on the system."
+    echo "Git is not installed on the system but it is required to get resflash."
+    echo "Please install it using the following command:"
+    echo "pkg_add git"
+    exit 1
+  else
+    debug "DEBUG" "Git is installed on the system."
+  fi
+}
+
 get_resflash() {
-  # Clone the resflash repository
+  debug "DEBUG" "Getting the resflash sources."
   git clone ${resflash_source_url} ${resflash_directory}
   if [ ${?} -ne 0 ]; then
     echo "Getting resflash from \"${resflash_source_url}\" did not succeed!"
@@ -169,6 +282,12 @@ get_resflash() {
 }
 
 get_packages() {
+  debug "DEBUG" "Getting the OpenBSD packages."
+  if [ "${package_list}" == "" ]; then
+    debug "DEBUG" "The list of packages to be installed is empty. Skipping this step."
+    return 0
+  fi
+
   # Check if the package directory exists and create it if not.
   if [ ! -f ${package_directory} ]; then
     mkdir -p ${${package_directory}

@@ -14,6 +14,13 @@ TLALOC_DIRECTORY=`pwd`
 show_config=${DEFAULT_SHOW_CONFIG}
 enable_debug=${DEFAULT_ENABLE_DEBUG}
 
+cleanup_directories=${DEFAULT_CLEANUP_DIRECTORIES}
+cleanup_base_directory=${DEFAULT_CLEANUP_BASE_DIRECTORY}
+cleanup_package_directory=${DEFAULT_CLEANUP_PACKAGE_DIRECTORY}
+cleanup_binary_directory=${DEFAULT_CLEANUP_BINARY_DIRECTORY}
+cleanup_image_directory=${DEFAULT_CLEANUP_IMAGE_DIRECTORY}
+cleanup_resflash_directory=${DEFAULT_CLEANUP_RESFLASH_DIRECTORY}
+
 openbsd_version=${DEFAULT_OPENBSD_VERSION}
 openbsd_version_short=${DEFAULT_OPENBSD_VERSION_SHORT}
 openbsd_arch=${DEFAULT_OPENBSD_ARCH}
@@ -42,29 +49,36 @@ while :; do
     break;
   fi
   case ${1} in
-    --help)                 print_usage;                  shift;;
-    --version)              print_version && exit 1;      shift;;
-    --show-config)          show_config=YES;              shift;;
-    --enable-debug)         enable_debug=YES;             shift;;
+    --help)                       print_usage;                    shift;;
+    --version)                    print_version && exit 1;        shift;;
+    --show-config)                show_config=YES;                shift;;
+    --enable-debug)               enable_debug=YES;               shift;;
 
-    --openbsd-version)      change_openbsd_version ${2};  shift 2;;
-    --openbsd-arch)         change_openbsd_arch ${2};     shift 2;;
-    --openbsd-url)          openbsd_url=${2}              shift 2;;
+    --cleanup-directories)        cleanup_directories=YES;        shift;;
+    --cleanup-base-directory)     cleanup_base_directory=YES;     shift;;
+    --cleanup-package-directory)  cleanup_package_directory=YES;  shift;;
+    --cleanup-binary-directory)   cleanup_binary_directory=YES;   shift;;
+    --cleanup-image-directory)    cleanup_image_directory=YES;    shift;;
+    --cleanup-resflash-directory) cleanup_resflash_directory=YES; shift;;
 
-    --package-directory)    package_directory=${2};       shift 2;;
-    --binary-directory)     binary_directory=${2};        shift 2;;
-    --base-directory)       base_directory=${2};          shift 2;;
-    --image-directory)      image_directory=${2};         shift 2;;
+    --openbsd-version)            change_openbsd_version ${2};    shift 2;;
+    --openbsd-arch)               change_openbsd_arch ${2};       shift 2;;
+    --openbsd-url)                openbsd_url=${2}                shift 2;;
 
-    --package-list)         package_list=${2};            shift 2;;
-    --binary-list)          binary_list=${2};             shift 2;;
+    --package-directory)          package_directory=${2};         shift 2;;
+    --binary-directory)           binary_directory=${2};          shift 2;;
+    --base-directory)             base_directory=${2};            shift 2;;
+    --image-directory)            image_directory=${2};           shift 2;;
 
-    --com0-speed)           com0_speed=${2};              shift 2;;
-    --image-size)           image_size=${2};              shift 2;;
-    --resflash-treeish)     resflash_treeish=${2};         shift 2;;
-    --resflash-source-url)  resflash_source_url=${2};     shift 2;;
-    -*|--*)                 print_usage;;
-    *)                      break;;
+    --package-list)               package_list=${2};              shift 2;;
+    --binary-list)                binary_list=${2};               shift 2;;
+
+    --com0-speed)                 com0_speed=${2};                shift 2;;
+    --image-size)                 image_size=${2};                shift 2;;
+    --resflash-treeish)           resflash_treeish=${2};          shift 2;;
+    --resflash-source-url)        resflash_source_url=${2};       shift 2;;
+    -*|--*)                       print_usage;;
+    *)                            break;;
   esac
 done
 
@@ -86,39 +100,19 @@ if [ "${show_config}" == "YES" ]; then
 fi
 
 # Check if the script is executed as root user
-debug "DEBUG" "Checking if the user executing the script is root."
-if [ $(id -u) -ne 0 ]; then
-  debug "DEBUG" "The script is not run as root user."
-  echo 'Please run the script as root user.'
-  exit 1
-else
-  debug "DEBUG" "The script is run as root user."
-fi
+is_user_root
+
+# Delete the working directories base, package, binary, image and resflash.
+cleanup_working_directories
 
 # Check if git is installed
-debug "DEBUG" "Checking if git is installed on the system."
-type git &> /dev/null
-if [ ${?} -ne 0 ]; then
-  debug "DEBUG" "Git is not installed on the system."
-  echo "Git is not installed on the system but it is required to get resflash."
-  echo "Please install it using the following command:"
-  echo "pkg_add git"
-  exit 1
-else
-  debug "DEBUG" "Git is installed on the system."
-fi
+is_git_installed
 
 # Get the resflash sources and checkout the specific treeish
-debug "DEBUG" "Getting the resflash sources."
 get_resflash
 
 # Get the packages to be installed on the resflash image
-debug "DEBUG" "Getting the OpenBSD packages."
-if [ "${package_list}" == "" ]; then
-  debug "DEBUG" "The list of packages to be installed is empty. Skipping this step."
-else
-  get_packages
-fi
+get_packages
 
 # TODO: get the OpenBSD binary packages
 
