@@ -112,7 +112,9 @@ fi
 debug "DEBUG" "Getting the resflash sources."
 get_resflash
 
-# TODO: get the packages to be installed on the resflash image
+# Get the packages to be installed on the resflash image
+debug "DEBUG" "Getting the OpenBSD packages."
+get_packages
 
 # TODO: get the OpenBSD binary packages
 

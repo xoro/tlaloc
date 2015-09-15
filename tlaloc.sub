@@ -169,3 +169,6 @@ get_resflash() {
     cd ${TLALOC_DIRECTORY}
   fi
 }
+
+get_packages() {
+}
