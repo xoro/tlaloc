@@ -13,6 +13,7 @@ TLALOC_DIRECTORY=`pwd`
 # Set the variables to default
 show_config=${DEFAULT_SHOW_CONFIG}
 enable_debug=${DEFAULT_ENABLE_DEBUG}
+enable_vga=${DEFAULT_ENABLE_VGA}
 
 cleanup_directories=${DEFAULT_CLEANUP_DIRECTORIES}
 cleanup_base_directory=${DEFAULT_CLEANUP_BASE_DIRECTORY}
@@ -53,6 +54,7 @@ while :; do
     --version)                    print_version && exit 1;        shift;;
     --show-config)                show_config=YES;                shift;;
     --enable-debug)               enable_debug=YES;               shift;;
+    --enable-vga)                 enable_vga=YES;                 shift;;
 
     --cleanup-directories)        cleanup_directories=YES;        shift;;
     --cleanup-base-directory)     cleanup_base_directory=YES;     shift;;
@@ -117,8 +119,11 @@ get_binaries
 # Populate the base directory
 populate_base_directory
 
-# TODO: do the final base directory modifications
+# Do the final base directory modifications
+do_base_midifications
 
-# TODO: call the resflash script to create the image and filesystem files
+# Call the resflash script to create the image and filesystem files
+run_resflash
 
-# TODO: move the image and filesystem files to the image directory
+# Move the image and filesystem files to the image directory
+mv ${resflash_directory}/resflash*.img ${resflash_directory}/resflash*.fs ${resflash_directory}/resflash*.sha256 ${image_directory}

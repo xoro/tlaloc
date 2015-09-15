@@ -8,6 +8,7 @@ print_usage() {
   echo "                 [--version]"
   echo "                 [--show-config]"
   echo "                 [--enable-debug]"
+  echo "                 [--enable-vga]"
 
   echo "                 [--cleanup-directories]"
   echo "                 [--cleanup-base-directory]"
@@ -42,6 +43,9 @@ print_usage() {
   echo "         display the configuration the image will be build with"
   echo "       --enable-debug:"
   echo "         displays more information during the execution of the script"
+  echo "       --enable-vga:"
+  echo "         the image will be build for a vga system, so we are ignoreing"
+  echo "         the --com0-speed option"
 
   echo "       --cleanup-directories:"
   echo "         the base, package, binary, image and resflash directories"
@@ -127,6 +131,7 @@ show_config() {
     echo "Command line switch          Variable name              Variable value"
     echo "============================ ========================== ====================="
     echo "--enable-debug               enable_debug               ${enable_debug}"
+    echo "--enable-vga                 enable_vga                 ${enable_vga}"
     echo ""
     echo "--cleanup-directories        cleanup_directories        ${cleanup_directories}"
     echo "--cleanup-base-directory     cleanup_base_directory     ${cleanup_base_directory}"
@@ -412,4 +417,27 @@ populate_base_directory() {
 
   # We do not have to forget the sysmerge thing!!!!!
   tar xzpf ${base_directory}/usr/share/sysmerge/etc.tgz -C ${base_directory}
+}
+
+do_base_midifications() {
+  # We want to save the complete /etc and the /var before we reboot the system.
+  echo "save_etc='.'" >> ${base_directory}/etc/resflash.conf
+  echo "save_var='.'" >> ${base_directory}/etc/resflash.conf
+
+  # We are sourcing the /etc/csh.cshrc in the /root/.cshrc because we cannot
+  # modify and save any changes in the / filesystem, only in the /etc and /variables
+  # filesystems.
+  echo ". /etc/csh.cshrc" >> ${base_directory}/root/.cshrc
+}
+
+run_resflash() {
+  debug "DEBUG" "Running the resflash script."
+  # Check if the user wants to build a vga or com0 image.
+  if [ "${enable_vga}" == "YES" ] || [ "${com0_speed}" == "" ]; then
+    com0_option=""
+  else
+    com0_option="-s ${com0_speed}"
+  fi
+  debug "DEBUG" "running: ${resflash_directory}/build_resflash.sh -p ${package_directory} ${com0_option} ${image_size} ${base_directory}"
+  ${resflash_directory}/build_resflash.sh -p ${package_directory} ${com0_option} ${image_size} ${base_directory}
 }
