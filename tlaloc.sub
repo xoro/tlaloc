@@ -261,7 +261,7 @@ is_git_installed() {
 
 get_resflash() {
   debug "DEBUG" "Getting the resflash sources if the do not exist yet."
-  if [ -f ${resflash_directory} ]; then
+  if [ -d ${resflash_directory} ]; then
     debug "DEBUG" "The resflash directory does already exist, skipping cloning."
     return 0
   fi
@@ -294,7 +294,7 @@ get_packages() {
   fi
 
   # Check if the package directory exists and create it if not.
-  if [ ! -f ${package_directory} ]; then
+  if [ ! -d ${package_directory} ]; then
     mkdir -p ${package_directory}
   fi
 
@@ -315,6 +315,7 @@ get_dependencies()
   package_info_file_path=${1}/${package_info_file}
   download_dir=${1}
 
+  #TODO: Check the files against the SHA256 hashes and restart the download if the SHA256's are not identicall.
   # Check if the package and package info files already exist
   if [ ! -f ${package_file_path} ] || [ ! -f ${package_info_file_path} ]; then
     # First we are getting the package info
