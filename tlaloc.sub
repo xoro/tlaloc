@@ -121,7 +121,12 @@ print_version() {
   exit 1
 }
 
-print_config() {
+show_config() {
+  debug "DEBUG" "Checking if the user wants only to show the current configuration."
+  if [ "${show_config}" != "YES" ]; then
+    return 1
+  fi
+
   echo "Command line switch          Variable name              Variable value"
   echo "============================ ========================== ====================="
   echo "--enable-debug               enable_debug               ${enable_debug}"
@@ -333,4 +338,82 @@ get_dependencies()
   for dependency in ${dependencies} ; do
     get_dependencies ${download_dir} ${dependency}.tgz
   done
+}
+
+get_binaries() {
+  #TODO: Check the files against the SHA256 hashes and restart the download if the SHA256's are not identicall.
+  # Exit if the binary list is empty
+  if [ "${binary_list}" == "" ]; then
+    echo "ERROR: no binary have been passed to be extracted or copied!"
+    exit 1
+  fi
+
+  debug "DEBUG" "Downloading the OpenBSD binary files \"${binary_list}\" and putting them into " \
+       "the directory \"${download_dir}\""
+
+  # Check if the directory for OpenBSD binary files exists and create it if not.
+  if [ ! -f ${binary_directory} ]; then
+    mkdir -p ${binary_directory}
+  fi
+
+  # Loop through the list of OpenBSD binary files and download them
+  for binary in ${binary_list} ; do
+    shortened_binary=` echo ${binary} | cut -c1-3`
+    # Check if we have one of the kernel binaries starting with bsd*
+    # or one of the *.tgz files.
+    if [ ${shortened_binary} == "bsd" ]; then
+      binary_name=${binary}
+    else
+      binary_name=${binary}${openbsd_version_short}.tgz
+    fi
+    # Only start the download if it has now yet been downloaded.
+    if [ ! -f ${binary_directory}/${binary_name} ]; then
+      echo "Downloading ${openbsd_binary_url}/${binary_name} into ${binary_directory}/${binary_name}"
+      ftp -o ${binary_directory}/${binary_name} ${openbsd_binary_url}/${binary_name}
+    else
+      echo "The binary ${binary_directory}/${binary_name} does already exist."
+    fi
+  done
+}
+
+# Args: 1 - Directory the OpenBSD binary packages have been downloaded to.
+# Args: 2 - List of OpenBSD binary packages to be put into the base directory.
+# Args: 3 - Directory the OpenBSD base system will be installed to.
+# Assigns:
+populate_base_directory() {
+  # Exit if the binary list is empty
+  if [ "${binary_list}" == "" ]; then
+    echo "ERROR: no binary have been passed to be extracted or copied!"
+    exit 1
+  fi
+
+  echo "Extracting the OpenBSD binary files \"${binary_list}\" from the directory " \
+       "\"${binary_directory}\" into the base directory \"${base_directory}\""
+
+  # First we are going to clean up the base directory from previous runs.
+  rm -rf ${base_directory}
+
+  # Check if the base directory exists and create it if not.
+  if [ ! -f ${base_directory} ]; then
+    mkdir -p ${base_directory}
+  fi
+
+  # Loop through the list of OpenBSD binary files
+  # and extract them into the base directory
+  for binary in ${binary_list} ; do
+    shortened_binary=` echo ${binary} | cut -c1-3`
+    # Check if we have one of the kernel binaries starting with bsd*.
+    if [ ${shortened_binary} == "bsd" ]; then
+      echo "Copying ${binary_directory}/${binary} to ${base_directory}/"
+      cp ${binary_list}/${binary} ${base_directory}/
+    else
+      echo "Extracting ${binary_directory}/${binary}${openbsd_version_short}.tgz to ${base_directory}/"
+      cd ${base_directory}
+      tar zxfph ${binary_directory}/${binary}${openbsd_version_short}.tgz -C ${base_directory}
+      cd ${TLALOC_DIRECTORY}
+    fi
+  done
+
+  # We do not have to forget the sysmerge thing!!!!!
+  tar xzpf ${base_directory}/usr/share/sysmerge/etc.tgz -C ${base_directory}
 }

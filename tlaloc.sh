@@ -94,10 +94,7 @@ if [ "${enable_debug}" == "YES" ]; then
 fi
 
 # Show the configuration and exit
-debug "DEBUG" "Checking if the user wants only to show the current configuration."
-if [ "${show_config}" == "YES" ]; then
-  print_config
-fi
+show_config
 
 # Check if the script is executed as root user
 is_user_root
@@ -114,9 +111,11 @@ get_resflash
 # Get the packages to be installed on the resflash image
 get_packages
 
-# TODO: get the OpenBSD binary packages
+# Get the OpenBSD binary packages
+get_binaries
 
-# TODO: populate the base directory
+# Populate the base directory
+populate_base_directory
 
 # TODO: do the final base directory modifications
 
