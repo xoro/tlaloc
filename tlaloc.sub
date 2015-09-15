@@ -143,8 +143,6 @@ debug() {
     debug_level=${1}
     debug_message=${2}
     echo "${debug_date_time} ${debug_level}: ${debug_message}"
-  else
-    echo "enable_debug=${enable_debug}"
   fi
 }
 
