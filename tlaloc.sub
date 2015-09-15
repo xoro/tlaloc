@@ -290,7 +290,7 @@ get_packages() {
 
   # Check if the package directory exists and create it if not.
   if [ ! -f ${package_directory} ]; then
-    mkdir -p ${${package_directory}
+    mkdir -p ${package_directory}
   fi
 
   # Loop through the list of packages to be downloaded and get them.
