@@ -379,10 +379,6 @@ get_binaries() {
   done
 }
 
-# Args: 1 - Directory the OpenBSD binary packages have been downloaded to.
-# Args: 2 - List of OpenBSD binary packages to be put into the base directory.
-# Args: 3 - Directory the OpenBSD base system will be installed to.
-# Assigns:
 populate_base_directory() {
   # Exit if the binary list is empty
   if [ "${binary_list}" == "" ]; then
@@ -439,5 +435,7 @@ run_resflash() {
     com0_option="-s ${com0_speed}"
   fi
   debug "DEBUG" "running: ${resflash_directory}/build_resflash.sh -p ${package_directory} ${com0_option} ${image_size} ${base_directory}"
-  ${resflash_directory}/build_resflash.sh -p ${package_directory} ${com0_option} ${image_size} ${base_directory}
+  cd ${resflash_directory}
+  ./build_resflash.sh -p ${package_directory} ${com0_option} ${image_size} ${base_directory}
+  cd ${TLALOC_DIRECTORY}
 }
