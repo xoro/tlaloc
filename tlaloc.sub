@@ -403,12 +403,10 @@ populate_base_directory() {
     # Check if we have one of the kernel binaries starting with bsd*.
     if [ ${shortened_binary} == "bsd" ]; then
       echo "Copying ${binary_directory}/${binary} to ${base_directory}/"
-      cp ${binary_list}/${binary} ${base_directory}/
+      cp ${binary_directory}/${binary} ${base_directory}/
     else
       echo "Extracting ${binary_directory}/${binary}${openbsd_version_short}.tgz to ${base_directory}/"
-      cd ${base_directory}
       tar zxfph ${binary_directory}/${binary}${openbsd_version_short}.tgz -C ${base_directory}
-      cd ${TLALOC_DIRECTORY}
     fi
   done
 
