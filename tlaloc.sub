@@ -436,6 +436,14 @@ run_resflash() {
   fi
   debug "DEBUG" "running: ${resflash_directory}/build_resflash.sh -p ${package_directory} ${com0_option} ${image_size} ${base_directory}"
   cd ${resflash_directory}
-  ./build_resflash.sh -p ${package_directory} ${com0_option} ${image_size} ${base_directory}
+  ./build_resflash.sh -p ../${package_directory} ${com0_option} ${image_size} ../${base_directory}
   cd ${TLALOC_DIRECTORY}
+}
+
+move_image_files() {
+  # Check if the image directory exists and create it if not.
+  if [ ! -d ${image_directory} ]; then
+    mkdir -p ${image_directory}
+  fi
+  mv ${resflash_directory}/resflash*.img ${resflash_directory}/resflash*.fs ${resflash_directory}/resflash*.sha512 ${image_directory}
 }

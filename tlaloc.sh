@@ -126,4 +126,4 @@ do_base_midifications
 run_resflash
 
 # Move the image and filesystem files to the image directory
-mv ${resflash_directory}/resflash*.img ${resflash_directory}/resflash*.fs ${resflash_directory}/resflash*.sha256 ${image_directory}
+move_image_files
