@@ -260,7 +260,12 @@ is_git_installed() {
 }
 
 get_resflash() {
-  debug "DEBUG" "Getting the resflash sources."
+  debug "DEBUG" "Getting the resflash sources if the do not exist yet."
+  if [ -f ${reslash_directory} ]; then
+    debug "DEBUG" "The resflash directory does already exist, skipping cloning."
+    return 0
+  fi
+
   git clone ${resflash_source_url} ${resflash_directory}
   if [ ${?} -ne 0 ]; then
     echo "Getting resflash from \"${resflash_source_url}\" did not succeed!"
