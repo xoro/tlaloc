@@ -114,7 +114,11 @@ get_resflash
 
 # Get the packages to be installed on the resflash image
 debug "DEBUG" "Getting the OpenBSD packages."
-get_packages
+if [ "${package_list}" == "" ]; then
+  debug "DEBUG" "The list of packages to be installed is empty. Skipping this step."
+else
+  get_packages
+fi
 
 # TODO: get the OpenBSD binary packages
 
