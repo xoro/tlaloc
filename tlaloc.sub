@@ -428,6 +428,10 @@ do_base_midifications() {
   # Disable services that we do not need on a router firmware (smtpd, sndiod).
   echo "smtpd_flags=NO" >> ${base_directory}/etc/rc.conf.local
   echo "sndiod_flags=NO" >> ${base_directory}/etc/rc.conf.local
+
+  # Configure the root user's vim settings.
+  echo ":syntax on" >> ${base_directory}/root/.vimrc
+  echo ":set ruler" >> ${base_directory}/root/.vimrc
 }
 
 run_resflash() {
