@@ -417,8 +417,8 @@ populate_base_directory() {
 
 do_base_midifications() {
   # We want to save the complete /etc and the /var before we reboot the system.
-  echo "save_etc='.'" >> ${base_directory}/etc/resflash.conf
-  echo "save_var='.'" >> ${base_directory}/etc/resflash.conf
+  echo "save_etc='.'" >> ${resflash_directory}/etc/resflash.conf
+  echo "save_var='.'" >> ${resflash_directory}/etc/resflash.conf
 
   # We are sourcing the /etc/csh.cshrc in the /root/.cshrc because we cannot
   # modify and save any changes in the / filesystem, only in the /etc and /variables

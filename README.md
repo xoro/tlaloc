@@ -60,3 +60,19 @@ The created image and file system files can be found in the image directory with
 ```
 VBoxManage convertfromraw resflash-amd64-com0-115200-20150720_0257.img resflash-amd64-com0-115200-20150720_0257.vdi --format vdi
 ```
+
+## Starting the reflash image im qemu
+
+It is possible start the resflash build image in qemu under OpenBSD. Therefore you have to install qemu on Openbsd using the following command:
+
+```
+pkg_add qemu
+```
+
+Then you can start the reflash image from within the tlaloc directory using this command:
+
+```
+qemu-system-x86_64 -nographic resflash-amd64-com0-115200-20150720_0257.img
+```
+
+If you created the resflash image using a different architecture than x86_64 just use the appropriate qemu-* executable.
