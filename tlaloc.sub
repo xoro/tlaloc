@@ -438,7 +438,7 @@ run_resflash() {
   if [ ! -d ${package_directory} ] || [ "`ls ${package_directory}`" == "" ]; then
     package_directory_option=""
   else
-    package_directory_option="-p ${package_directory}"
+    package_directory_option="-p ../${package_directory}"
   fi
   resflash_command="./build_resflash.sh ${package_directory_option} ${com0_option} ${image_size} ../${base_directory}"
   debug "DEBUG" "running: ${resflash_command}"
