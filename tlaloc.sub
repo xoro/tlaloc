@@ -352,7 +352,7 @@ get_binaries() {
   fi
 
   debug "DEBUG" "Downloading the OpenBSD binary files \"${binary_list}\" and putting them into " \
-       "the directory \"${download_dir}\""
+       "the directory \"${binary_directory}\""
 
   # Check if the directory for OpenBSD binary files exists and create it if not.
   if [ ! -f ${binary_directory} ]; then
@@ -440,9 +440,10 @@ run_resflash() {
   else
     package_directory_option="-p ${package_directory}"
   fi
-  debug "DEBUG" "running: ${resflash_directory}/build_resflash.sh ${package_directory_option} ${com0_option} ${image_size} ${base_directory}"
+  resflash_command="./build_resflash.sh ${package_directory_option} ${com0_option} ${image_size} ../${base_directory}"
+  debug "DEBUG" "running: ${resflash_command}"
   cd ${resflash_directory}
-  ./build_resflash.sh -p ../${package_directory} ${com0_option} ${image_size} ../${base_directory}
+  ${resflash_command}
   cd ${TLALOC_DIRECTORY}
 }
 
