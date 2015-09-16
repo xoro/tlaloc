@@ -434,7 +434,13 @@ run_resflash() {
   else
     com0_option="-s ${com0_speed}"
   fi
-  debug "DEBUG" "running: ${resflash_directory}/build_resflash.sh -p ${package_directory} ${com0_option} ${image_size} ${base_directory}"
+  # Check if we have packages in the package_directory, so we have to passed the path
+  if [ ! -d ${package_directory} ] || [ "`ls ${package_directory}`" == "" ]; then
+    package_directory_option=""
+  else
+    package_directory_option="-p ${package_directory}"
+  fi
+  debug "DEBUG" "running: ${resflash_directory}/build_resflash.sh ${package_directory_option} ${com0_option} ${image_size} ${base_directory}"
   cd ${resflash_directory}
   ./build_resflash.sh -p ../${package_directory} ${com0_option} ${image_size} ../${base_directory}
   cd ${TLALOC_DIRECTORY}
