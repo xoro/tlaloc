@@ -43,6 +43,12 @@ image_size=${DEFAULT_IMAGE_SIZE}
 resflash_treeish=${DEFAULT_RESFLASH_TREEISH}
 resflash_source_url=${DEFAULT_RESFLASH_SOURCE_URL}
 
+# The user of tlaloc has the posibility to overwrite the default configuration
+# options by copying his own script tlaloc.conf.logl into the tlaloc root directory.
+if [ -f ./tlaloc.conf.local ]; then
+  . ./tlaloc.conf.local
+fi
+
 # Parse options first
 while :; do
   # Exit the while loop if we have no options passed.
