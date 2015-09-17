@@ -415,7 +415,7 @@ populate_base_directory() {
   tar xzpf ${base_directory}/usr/share/sysmerge/etc.tgz -C ${base_directory}
 }
 
-do_base_midifications() {
+do_base_modifications() {
   # We want to save the complete /etc and the /var before we reboot the system.
   echo "save_etc='.'" >> ${resflash_directory}/etc/resflash.conf
   echo "save_var='.'" >> ${resflash_directory}/etc/resflash.conf

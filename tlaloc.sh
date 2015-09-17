@@ -120,7 +120,7 @@ get_binaries
 populate_base_directory
 
 # Do the final base directory modifications
-do_base_midifications
+do_base_modifications
 
 # Call the resflash script to create the image and filesystem files
 run_resflash
