@@ -417,7 +417,7 @@ populate_base_directory() {
 
 do_base_modifications() {
   if [ -f ./tlaloc.modifications.sh ]; then
-    ./tlaloc.modifications.sh
+    . ./tlaloc.modifications.sh
   fi
 }
 
