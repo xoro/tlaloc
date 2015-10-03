@@ -39,6 +39,7 @@ resflash_directory=${DEFAULT_RESFLASH_DIRECTORY}
 package_list=${DEFAULT_PACKAGE_LIST}
 binary_list=${DEFAULT_BINARY_LIST}
 
+disk_name=${DEFAULT_DISK_NAME}
 com0_speed=${DEFAULT_COM0_SPEED}
 image_size=${DEFAULT_IMAGE_SIZE}
 resflash_treeish=${DEFAULT_RESFLASH_TREEISH}
@@ -83,6 +84,7 @@ while :; do
     --package-list)               package_list=${2};              shift 2;;
     --binary-list)                binary_list=${2};               shift 2;;
 
+    --disk-name)                  disk_name=${2};                 shift 2;;
     --com0-speed)                 com0_speed=${2};                shift 2;;
     --image-size)                 image_size=${2};                shift 2;;
     --resflash-treeish)           resflash_treeish=${2};          shift 2;;

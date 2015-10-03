@@ -31,6 +31,7 @@ print_usage() {
   echo "                 [--package-list <package_list>]"
   echo "                 [--binary-list <binary_list>]"
 
+  echo "                 [--disk-name <disk_name>]"
   echo "                 [--com0-speed <com0_speed>]"
   echo "                 [--image-size <image_size>]"
   echo "                 [--resflash-treeish <resflash_treeish>]"
@@ -106,6 +107,9 @@ print_usage() {
   echo "         the base directory"
   echo "           default is \"${DEFAULT_BINARY_LIST}\""
 
+  echo "       --disk-name:"
+  echo "         disk name the image will be running from"
+  echo "           default is \"${DEFAULT_DISK_NAME}\""
   echo "       --com0-speed:"
   echo "         com0 console speed in baud"
   echo "           default is \"${DEFAULT_COM0_SPEED}\""
@@ -161,6 +165,7 @@ show_config() {
     echo "--package-list               package_list               ${package_list}"
     echo "--binary-list                binary_list                ${binary_list}"
     echo ""
+    echo "--disk-name                  disk_name                  ${disk_name}"
     echo "--com0-speed                 com0_speed                 ${com0_speed}"
     echo "--image-size                 image_size                 ${image_size}"
     echo "--resflash-treeish           resflash_treeish           ${resflash_treeish}"
@@ -444,6 +449,12 @@ do_base_modifications() {
 
 run_resflash() {
   debug "DEBUG" "Running the resflash script."
+  # Check if the user wants to use a different hard disk name.
+  if [ "${disk_name}" == "" ]; then
+    disk_name_option=""
+  else
+    disk_name_option="-d ${disk_name}"
+  fi
   # Check if the user wants to build a vga or com0 image.
   if [ "${enable_vga}" == "YES" ] || [ "${com0_speed}" == "" ]; then
     com0_option=""
@@ -462,7 +473,7 @@ run_resflash() {
   else
     skip_base_update_option=""
   fi
-  resflash_command="./build_resflash.sh ${skip_base_update_option} ${package_directory_option} ${com0_option} ${image_size} ../${base_directory}"
+  resflash_command="./build_resflash.sh ${skip_base_update_option} ${package_directory_option} ${disk_name_option} ${com0_option} ${image_size} ../${base_directory}"
   debug "DEBUG" "running: ${resflash_command}"
   cd ${resflash_directory}
   ${resflash_command}
