@@ -4,7 +4,7 @@
 # Copyright Timo Pallach <timo@pallach.de>, see LICENSE for details
 
 # Set some tlaloc global variables
-TLALOC_VERSION=0.0.1
+TLALOC_VERSION=1.0.1
 TLALOC_DIRECTORY=`pwd`
 
 . ./tlaloc.conf
@@ -48,6 +48,8 @@ resflash_source_url=${DEFAULT_RESFLASH_SOURCE_URL}
 # options by copying his own script tlaloc.conf.logl into the tlaloc root directory.
 if [ -f ./tlaloc.conf.local ]; then
   . ./tlaloc.conf.local
+  change_openbsd_version ${openbsd_version}
+  change_openbsd_arch ${openbsd_arch}
 fi
 
 # Parse options first
