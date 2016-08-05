@@ -463,5 +463,5 @@ move_image_files() {
   if [ ! -d ${image_directory} ]; then
     mkdir -p ${image_directory}
   fi
-  mv ${resflash_directory}/resflash*.img ${resflash_directory}/resflash*.fs ${resflash_directory}/resflash*.sha512 ${image_directory}
+  mv ${resflash_directory}/resflash*.img ${resflash_directory}/resflash*.fs ${resflash_directory}/resflash*.cksum ${image_directory}
 }
