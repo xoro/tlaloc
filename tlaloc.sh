@@ -35,6 +35,7 @@ binary_directory=${DEFAULT_BINARY_DIRECTORY}
 image_directory=${DEFAULT_IMAGE_DIRECTORY}
 resflash_directory=${DEFAULT_RESFLASH_DIRECTORY}
 
+package_path=${DEFAULT_PACKAGE_PATH}
 package_list=${DEFAULT_PACKAGE_LIST}
 binary_list=${DEFAULT_BINARY_LIST}
 
