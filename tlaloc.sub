@@ -27,6 +27,7 @@ print_usage() {
   echo "                 [--image-directory <image_directory>]"
   echo "                 [--resflash-directory <resflash_directory>]"
 
+  echo "                 [--package-path <package_path>]"
   echo "                 [--package-list <package_list>]"
   echo "                 [--binary-list <binary_list>]"
 
@@ -94,8 +95,11 @@ print_usage() {
   echo "         directory that contains the resflash git repository"
   echo "           default is \"${DEFAULT_RESFLASH_DIRECTORY}\""
 
+  echo "       --package-path:"
+  echo "         colon seperated list of package paths to search for packages"
+  echo "           default is \"${DEFAULT_PACKAGE_PATH}\""
   echo "       --package-list:"
-  echo "         blank seperated list of packages to be installed in the image"
+  echo "         comma seperated list of packages to be installed on the image"
   echo "           default is \"${DEFAULT_PACKAGE_LIST}\""
   echo "       --binary-list:"
   echo "         blank seperated list of binary packages to be used for"
@@ -153,6 +157,7 @@ show_config() {
     echo "--image-directory            image_directory            ${image_directory}"
     echo "--resflash-directory         resflash_directory         ${resflash_directory}"
     echo ""
+    echo "--package-path               package_path               ${package_path}"
     echo "--package-list               package_list               ${package_list}"
     echo "--binary-list                binary_list                ${binary_list}"
     echo ""
@@ -451,7 +456,15 @@ run_resflash() {
   else
     package_directory_option="-p ../${package_directory}"
   fi
-  resflash_command="./build_resflash.sh ${package_directory_option} ${com0_option} ${image_size} ../${base_directory}"
+  # We pass the pkg_path and pkg_list to build_resflash if these two variables are not empty.
+  if [ "${package_path}" == "" ] || [ "${package_list}" == "" ]; then
+    package_paths_option=""
+    package_list_option=""
+  else
+    package_path_option="--pkg_path ${package_path}"
+    package_list_option="--pkg_list ${package_list}"
+  fi
+  resflash_command="./build_resflash.sh ${package_directory_option} ${package_path_option} ${package_list_option} ${com0_option} ${image_size} ../${base_directory}"
   debug "DEBUG" "running: ${resflash_command}"
   cd ${resflash_directory}
   ${resflash_command}
