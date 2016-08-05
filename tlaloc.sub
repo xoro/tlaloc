@@ -464,7 +464,7 @@ run_resflash() {
     package_path_option="--pkg_path ${package_path}"
     package_list_option="--pkg_list ${package_list}"
   fi
-  resflash_command="./build_resflash.sh ${package_directory_option} ${package_path_option} %{package_list_option} ${com0_option} ${image_size} ../${base_directory}"
+  resflash_command="./build_resflash.sh ${package_directory_option} ${package_path_option} ${package_list_option} ${com0_option} ${image_size} ../${base_directory}"
   debug "DEBUG" "running: ${resflash_command}"
   cd ${resflash_directory}
   ${resflash_command}
