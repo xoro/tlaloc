@@ -9,7 +9,6 @@ print_usage() {
   echo "                 [--show-config]"
   echo "                 [--enable-debug]"
   echo "                 [--enable-vga]"
-  echo "                 [--skip-base-update]"
 
   echo "                 [--cleanup-directories]"
   echo "                 [--cleanup-base-directory]"
@@ -47,9 +46,6 @@ print_usage() {
   echo "       --enable-vga:"
   echo "         the image will be build for a vga system, so we are ignoreing"
   echo "         the --com0-speed option"
-  echo "       --skip-base-update:"
-  echo "         the base directory will not be updated to the"
-  echo "         latest OpenBSD patch level"
 
   echo "       --cleanup-directories:"
   echo "         the base, package, binary, image and resflash directories"
@@ -136,7 +132,6 @@ show_config() {
     echo "============================ ========================== ====================="
     echo "--enable-debug               enable_debug               ${enable_debug}"
     echo "--enable-vga                 enable_vga                 ${enable_vga}"
-    echo "--skip-base-update           skip_base_update           ${skip_base_update}"
     echo ""
     echo "--cleanup-directories        cleanup_directories        ${cleanup_directories}"
     echo "--cleanup-base-directory     cleanup_base_directory     ${cleanup_base_directory}"
@@ -456,13 +451,7 @@ run_resflash() {
   else
     package_directory_option="-p ../${package_directory}"
   fi
-  # Check if we have to skip the base directory update
-  if [ "${skip_base_update}" == "YES" ]; then
-    skip_base_update_option="-n"
-  else
-    skip_base_update_option=""
-  fi
-  resflash_command="./build_resflash.sh ${skip_base_update_option} ${package_directory_option} ${com0_option} ${image_size} ../${base_directory}"
+  resflash_command="./build_resflash.sh ${package_directory_option} ${com0_option} ${image_size} ../${base_directory}"
   debug "DEBUG" "running: ${resflash_command}"
   cd ${resflash_directory}
   ${resflash_command}

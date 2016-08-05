@@ -14,7 +14,6 @@ TLALOC_DIRECTORY=`pwd`
 show_config=${DEFAULT_SHOW_CONFIG}
 enable_debug=${DEFAULT_ENABLE_DEBUG}
 enable_vga=${DEFAULT_ENABLE_VGA}
-skip_base_update=${DEFAULT_SKIP_BASE_UPDATE}
 
 cleanup_directories=${DEFAULT_CLEANUP_DIRECTORIES}
 cleanup_base_directory=${DEFAULT_CLEANUP_BASE_DIRECTORY}
@@ -64,7 +63,6 @@ while :; do
     --show-config)                show_config=YES;                shift;;
     --enable-debug)               enable_debug=YES;               shift;;
     --enable-vga)                 enable_vga=YES;                 shift;;
-    --skip-base-update)           skip_base_update=YES;           shift;;
 
     --cleanup-directories)        cleanup_directories=YES;        shift;;
     --cleanup-base-directory)     cleanup_base_directory=YES;     shift;;
