@@ -16,7 +16,7 @@ ln -s /home/root /root
 
 ## Building the resflash image and file system files
 
-* Get the tlaloc project repository, change to the project directory and start the default build.
+* Download the tlaloc project repository, change to the project directory and start the default build.
 ```
 cd ~
 git clone https://github.com/xoro/tlaloc.git

@@ -263,7 +263,7 @@ is_git_installed() {
   type git &> /dev/null
   if [ ${?} -ne 0 ]; then
     debug "DEBUG" "Git is not installed on the system."
-    echo "Git is not installed on the system but it is required to get resflash."
+    echo "Git is not installed on the system but it is required to fetch resflash."
     echo "Please install it using the following command:"
     echo "pkg_add git"
     exit 1
@@ -272,8 +272,8 @@ is_git_installed() {
   fi
 }
 
-get_resflash() {
-  debug "DEBUG" "Getting the resflash sources if the do not exist yet."
+fetch_resflash() {
+  debug "DEBUG" "Fetching the resflash sources if the do not exist yet."
   if [ -d ${resflash_directory} ]; then
     debug "DEBUG" "The resflash directory does already exist, skipping cloning."
     return 0
@@ -281,7 +281,7 @@ get_resflash() {
 
   git clone ${resflash_source_url} ${resflash_directory}
   if [ ${?} -ne 0 ]; then
-    echo "Getting resflash from \"${resflash_source_url}\" did not succeed!"
+    echo "Fetching resflash from \"${resflash_source_url}\" did not succeed!"
     echo "git clone returned \"${?}\"."
     echo "Exiting the script."
     exit 1
@@ -299,8 +299,8 @@ get_resflash() {
   fi
 }
 
-get_packages() {
-  debug "DEBUG" "Getting the OpenBSD packages."
+fetch_packages() {
+  debug "DEBUG" "Fetching the OpenBSD packages."
   if [ "${package_list}" == "" ]; then
     debug "DEBUG" "The list of packages to be installed is empty. Skipping this step."
     return 0
@@ -311,14 +311,14 @@ get_packages() {
     mkdir -p ${package_directory}
   fi
 
-  # Loop through the list of packages to be downloaded and get them.
+  # Loop through the list of packages to be downloaded and fetch them.
   for package in ${package_list} ; do
     package_filename=`PKG_PATH=${openbsd_package_url} pkg_info -f ${package} | grep tgz | rev | cut -d "/" -f 1 | rev`
-    get_dependencies ${package_directory} ${package_filename}
+    fetch_dependencies ${package_directory} ${package_filename}
   done
 }
 
-get_dependencies()
+fetch_dependencies()
 {
   # Make the following calls more readable,
   # so we are using some readable variablenames.
@@ -331,7 +331,7 @@ get_dependencies()
   #TODO: Check the files against the SHA256 hashes and restart the download if the SHA256's are not identicall.
   # Check if the package and package info files already exist
   if [ ! -f ${package_file_path} ] || [ ! -f ${package_info_file_path} ]; then
-    # First we are getting the package info
+    # First we are fetching the package info
     PKG_PATH=${openbsd_package_url} pkg_info -f ${package_file} > ${package_info_file_path}
     # Then we are greping the url from the package info file
     package_url=`grep tgz ${package_info_file_path} | rev | cut -d " " -f 1 | rev`
@@ -344,11 +344,11 @@ get_dependencies()
   # Finaly we are checking for dependencies
   dependencies=`grep '@depend' ${package_info_file_path} | cut -f 3 -d ":"`
   for dependency in ${dependencies} ; do
-    get_dependencies ${download_dir} ${dependency}.tgz
+    fetch_dependencies ${download_dir} ${dependency}.tgz
   done
 }
 
-get_binaries() {
+fetch_binaries() {
   #TODO: Check the files against the SHA256 hashes and restart the download if the SHA256's are not identicall.
   # Exit if the binary list is empty
   if [ "${binary_list}" == "" ]; then

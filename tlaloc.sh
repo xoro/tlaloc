@@ -116,14 +116,14 @@ cleanup_working_directories
 # Check if git is installed
 is_git_installed
 
-# Get the resflash sources and checkout the specific treeish
-get_resflash
+# Fetch the resflash sources and checkout the specific treeish
+fetch_resflash
 
-# Get the packages to be installed on the resflash image
-get_packages
+# Fetch the packages to be installed on the resflash image
+fetch_packages
 
-# Get the OpenBSD binary packages
-get_binaries
+# Fetch the OpenBSD binary packages
+fetch_binaries
 
 # Populate the base directory
 populate_base_directory
