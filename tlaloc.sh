@@ -41,7 +41,7 @@ binary_list=${DEFAULT_BINARY_LIST}
 
 com0_speed=${DEFAULT_COM0_SPEED}
 image_size=${DEFAULT_IMAGE_SIZE}
-resflash_treeish=${DEFAULT_RESFLASH_TREEISH}
+resflash_version=${DEFAULT_RESFLASH_VERSION}
 resflash_source_url=${DEFAULT_RESFLASH_SOURCE_URL}
 
 # The user of tlaloc has the posibility to overwrite the default configuration
@@ -86,7 +86,7 @@ while :; do
 
     --com0-speed)                 com0_speed=${2};                shift 2;;
     --image-size)                 image_size=${2};                shift 2;;
-    --resflash-treeish)           resflash_treeish=${2};          shift 2;;
+    --resflash-version)           resflash_version=${2};          shift 2;;
     --resflash-source-url)        resflash_source_url=${2};       shift 2;;
     -*|--*)                       print_usage;;
     *)                            break;;
@@ -116,7 +116,7 @@ cleanup_working_directories
 # Check if git is installed
 is_git_installed
 
-# Fetch the resflash sources and checkout the specific treeish
+# Fetch the resflash sources and checkout the specific version
 fetch_resflash
 
 # Fetch the OpenBSD binary packages
