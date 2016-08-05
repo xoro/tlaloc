@@ -120,7 +120,7 @@ is_git_installed
 fetch_resflash
 
 # Fetch the packages to be installed on the resflash image
-fetch_packages
+#fetch_packages
 
 # Fetch the OpenBSD binary packages
 fetch_binaries
