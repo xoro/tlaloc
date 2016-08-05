@@ -299,55 +299,6 @@ fetch_resflash() {
   fi
 }
 
-fetch_packages() {
-  debug "DEBUG" "Fetching the OpenBSD packages."
-  if [ "${package_list}" == "" ]; then
-    debug "DEBUG" "The list of packages to be installed is empty. Skipping this step."
-    return 0
-  fi
-
-  # Check if the package directory exists and create it if not.
-  if [ ! -d ${package_directory} ]; then
-    mkdir -p ${package_directory}
-  fi
-
-  # Loop through the list of packages to be downloaded and fetch them.
-  for package in ${package_list} ; do
-    package_filename=`PKG_PATH=${openbsd_package_url} pkg_info -f ${package} | grep tgz | rev | cut -d "/" -f 1 | rev`
-    fetch_dependencies ${package_directory} ${package_filename}
-  done
-}
-
-fetch_dependencies()
-{
-  # Make the following calls more readable,
-  # so we are using some readable variablenames.
-  package_file=${2}
-  package_file_path=${1}/${2}
-  package_info_file=${2}.info
-  package_info_file_path=${1}/${package_info_file}
-  download_dir=${1}
-
-  #TODO: Check the files against the SHA256 hashes and restart the download if the SHA256's are not identicall.
-  # Check if the package and package info files already exist
-  if [ ! -f ${package_file_path} ] || [ ! -f ${package_info_file_path} ]; then
-    # First we are fetching the package info
-    PKG_PATH=${openbsd_package_url} pkg_info -f ${package_file} > ${package_info_file_path}
-    # Then we are greping the url from the package info file
-    package_url=`grep tgz ${package_info_file_path} | rev | cut -d " " -f 1 | rev`
-    # And now we download it.
-    ftp -o ${package_file_path} ${package_url}
-  else
-    echo "The package ${package_file_path} does already exist."
-  fi
-
-  # Finaly we are checking for dependencies
-  dependencies=`grep '@depend' ${package_info_file_path} | cut -f 3 -d ":"`
-  for dependency in ${dependencies} ; do
-    fetch_dependencies ${download_dir} ${dependency}.tgz
-  done
-}
-
 fetch_binaries() {
   #TODO: Check the files against the SHA256 hashes and restart the download if the SHA256's are not identicall.
   # Exit if the binary list is empty
