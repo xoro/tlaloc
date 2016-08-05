@@ -417,7 +417,7 @@ populate_base_directory() {
   done
 
   # We do not have to forget the sysmerge thing!!!!!
-  tar xzpf ${base_directory}/usr/share/sysmerge/etc.tgz -C ${base_directory}
+  tar xzpf ${base_directory}/var/sysmerge/etc.tgz -C ${base_directory}
 }
 
 do_base_modifications() {
