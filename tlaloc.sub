@@ -391,7 +391,8 @@ do_base_modifications() {
   # the tlaloc root directory.
   if [ -f ./tlaloc.modifications.sh ]; then
     debug "DEBUG" "Entering the modifications script."
-    sh ./tlaloc.modifications.sh
+    chmod a+x ./tlaloc.modifications.sh
+    ./tlaloc.modifications.sh
   fi
 }
 
