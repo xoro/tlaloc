@@ -386,6 +386,7 @@ do_base_modifications() {
   debug "DEBUG" "Disabling the audio deamon."
   echo "sndiod_flags=NO" >> ${base_directory}/etc/rc.conf.local
 
+  echo "DEBUG: pwd=`pwd`"
   # We are doing the default tlaloc modifications to the base directory structure.
   if [ -f ./tlaloc.modifications.sh ]; then
     debug "DEBUG" "Sourcing the tlaloc.modifications.sh script."
