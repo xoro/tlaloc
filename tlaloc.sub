@@ -388,14 +388,18 @@ do_base_modifications() {
 
   # We are doing the default tlaloc modifications to the base directory structure.
   if [ -f ./tlaloc.modifications.sh ]; then
+    debug "DEBUG" "Sourcing the tlaloc.modifications.sh script."
     . ./tlaloc.modifications.sh
+    debug "DEBUG" "Calling do_modifications."
     do_modifications
   fi
   # The user of tlaloc has the posibility to do some additional modifications
   # to the base system by copying his own script tlaloc.modifications.sh into
   # the tlaloc root directory.
   if [ -f ./tlaloc.modifications.local.sh ]; then
+    debug "DEBUG" "Sourcing the tlaloc.modifications.local.sh script."
     . ./tlaloc.modifications.local.sh
+    debug "DEBUG" "Calling do_modifications_local."
     do_modifications_local
   fi
 }
