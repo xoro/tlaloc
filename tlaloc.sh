@@ -10,6 +10,8 @@ TLALOC_DIRECTORY=`pwd`
 . ./tlaloc.conf
 . ./tlaloc.sub
 
+debug "DEBUG" "Entering the tlaloc.sh sricpt. Already sourced the tlaloc.conf and tlaloc.sub files."
+
 # Set the variables to default
 show_config=${DEFAULT_SHOW_CONFIG}
 enable_debug=${DEFAULT_ENABLE_DEBUG}
@@ -105,31 +107,43 @@ if [ "${enable_debug}" == "YES" ]; then
 fi
 
 # Show the configuration and exit
+debug "DEBUG" "Running show_config"
 show_config
 
 # Check if the script is executed as root user
+debug "DEBUG" "Running is_user_root"
 is_user_root
 
 # Delete the working directories base, package, binary, image and resflash.
+debug "DEBUG" "Running cleanup_working_directories"
 cleanup_working_directories
 
 # Check if git is installed
+debug "DEBUG" "Running is_git_installed"
 is_git_installed
 
 # Fetch the resflash sources and checkout the specific version
+debug "DEBUG" "Running fetch_resflash"
 fetch_resflash
 
 # Fetch the OpenBSD binary packages
+debug "DEBUG" "Running fetch_binaries"
 fetch_binaries
 
 # Populate the base directory
+debug "DEBUG" "Running populate_base_directory"
 populate_base_directory
 
 # Do the final base directory modifications
+debug "DEBUG" "Running do_base_modifications"
 do_base_modifications
 
 # Call the resflash script to create the image and filesystem files
+debug "DEBUG" "Running run_resflash"
 run_resflash
 
 # Move the image and filesystem files to the image directory
+debug "DEBUG" "Running move_image_files"
 move_image_files
+
+debug "DEBUG" "Exiting the tlaloc.sh script."
