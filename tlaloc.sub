@@ -373,6 +373,7 @@ populate_base_directory() {
 
 do_base_modifications() {
   # We want to save the complete /etc and the /var before we reboot the system.
+  debug "DEBUG" "Modifying the /etc/resflash.conf"
   echo "save_etc='.'" >> ${resflash_directory}/etc/resflash.conf
   echo "save_var='.'" >> ${resflash_directory}/etc/resflash.conf
 
@@ -382,14 +383,15 @@ do_base_modifications() {
   echo ". /etc/csh.cshrc" >> ${base_directory}/root/.cshrc
 
   # Disable services that we do not need on a router firmware (smtpd, sndiod).
-  echo "smtpd_flags=NO" >> ${base_directory}/etc/rc.conf.local
+  debug "DEBUG" "Disabling the audio deamon."
   echo "sndiod_flags=NO" >> ${base_directory}/etc/rc.conf.local
 
   # The user of tlaloc has the posibility to do some additional modifications
   # to the base system by copying his own script tlaloc.modifications.sh into
   # the tlaloc root directory.
   if [ -f ./tlaloc.modifications.sh ]; then
-    . ./tlaloc.modifications.sh
+    debug "DEBUG" "Entering the modifications script."
+    sh ./tlaloc.modifications.sh
   fi
 }
 
