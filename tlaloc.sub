@@ -386,13 +386,17 @@ do_base_modifications() {
   debug "DEBUG" "Disabling the audio deamon."
   echo "sndiod_flags=NO" >> ${base_directory}/etc/rc.conf.local
 
+  # We are doing the default tlaloc modifications to the base directory structure.
+  if [ -f ./tlaloc.modifications.sh ]; then
+    . ./tlaloc.modifications.sh
+    do_modifications
+  fi
   # The user of tlaloc has the posibility to do some additional modifications
   # to the base system by copying his own script tlaloc.modifications.sh into
   # the tlaloc root directory.
-  if [ -f ./tlaloc.modifications.sh ]; then
-    debug "DEBUG" "Entering the modifications script."
-    chmod a+x ./tlaloc.modifications.sh
-    ./tlaloc.modifications.sh
+  if [ -f ./tlaloc.modifications.local.sh ]; then
+    . ./tlaloc.modifications.local.sh
+    do_modifications_local
   fi
 }
 
