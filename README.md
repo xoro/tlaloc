@@ -21,7 +21,7 @@ ln -s /home/root /root
 cd ~
 git clone https://github.com/xoro/tlaloc.git
 cd tlaloc
-tlaloc.sh
+./tlaloc.sh
 ```
 The created image and file system files can be found in the image directory within the tlaloc project directory.
 
