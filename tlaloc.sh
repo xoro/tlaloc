@@ -4,7 +4,7 @@
 # Copyright Timo Pallach <timo@pallach.de>, see LICENSE for details
 
 # Set some tlaloc global variables
-TLALOC_VERSION=V1.0.1
+TLALOC_VERSION=master
 TLALOC_DIRECTORY=`pwd`
 
 . ./tlaloc.conf
